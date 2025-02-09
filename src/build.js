@@ -29,7 +29,7 @@ const config = readCfg('./src/config.json');
 const feeds = USE_CACHE ? {} : readCfg('./src/feeds.json');
 const cache = USE_CACHE ? readCfg(CACHE_PATH) : {};
 
-await build({ config, feeds, cache, writeCache: WRITE });
+await build({ config, feeds, cache, writeCache: WRITE })
 
 async function build({ config, feeds, cache, writeCache = false }) {
   let allItems = cache.allItems || [];
@@ -115,9 +115,22 @@ async function build({ config, feeds, cache, writeCache = false }) {
             if (redirect) item.link = `https://${redirect}${url.pathname}${url.search}`;
           }
 
-          // 5. escape html in titles
-          item.title = escapeHtml(item.title);
-        });
+
+			// 5. escape any html in the title
+			if (typeof item.title === 'string') {
+				try {
+					item.title = escapeHtml(item.title);
+				} catch (error) {
+					console.error('Error escaping HTML in title:', error);
+				}
+			} else {
+				console.log('Title is not a string:', item.title);
+				item.title = '(NO TITLE ON THIS ITEM)'
+					console.log('item.link:', item.link);
+				console.log('item.contentSnippet:', item.contentSnippet);
+				console.log(Object.keys(item));
+			}
+		});
 
         // add to allItems
         allItems = [...allItems, ...contents.items];
