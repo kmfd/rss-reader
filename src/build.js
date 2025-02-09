@@ -52,25 +52,27 @@ async function build({ config, feeds, cache, writeCache = false }) {
   for (const groupName in feeds) {
     groupContents[groupName] = [];
 
-    const results = await Promise.allSettled(
-      Object.values(feeds[groupName]).map(url =>
-        fetch(url, { method: 'GET' })
-          .then(res => [url, res])
-          .catch(e => {
-            throw [url, e];
-          })
-      )
-    );
+    
+	const results = await Promise.allSettled(
+	  feeds[groupName].map(item =>
+		fetch(item.url, { method: 'GET' })
+		  .then(res => [item.name, item.url, res])
+		  .catch(e => {
+			throw [item.name, item.url, e];
+		  })
+	  )
+	);
 
-    for (const result of results) {
-      if (result.status === 'rejected') {
-        const [url, error] = result.reason;
-        errors.push(url);
-        console.error(`Error fetching ${url}:\n`, error);
-        continue;
-      }
-
-      const [url, response] = result.value;
+	for (const result of results) {
+	  if (result.status === 'rejected') {
+		const [name, url, error] = result.reason;
+		errors.push(url);
+		console.error(`Error fetching ${name} (${url}):\n`, error);
+		continue;
+	  }
+	  
+  
+        const [name, url, response] = result.value;
 
       try {
         // e.g., `application/xml; charset=utf-8` -> `application/xml`
@@ -89,7 +91,7 @@ async function build({ config, feeds, cache, writeCache = false }) {
           throw Error(`Feed at ${url} contains no items.`)
 
         contents.feed = url;
-        contents.title = contents.title || contents.link;
+		contents.title = name; // use the name property instead of contents.title
         groupContents[groupName].push(contents);
 
         // item sort & normalization

@@ -1,16 +1,40 @@
 {
   "feeds": [
-    "https://hnrss.org/frontpage?points=10&comments=5&count=35"
+    {
+      "name": "Hacker News: Front Page",
+      "url": "https://hnrss.org/frontpage?points=10&comments=5&count=35"
+    }
   ],
   "blogs": [
-    "https://xeiaso.net/blog.rss",
-    "https://drewdevault.com/blog/index.xml",
-    "https://danluu.com/atom.xml",
-    "https://kevinfiol.com/atom.xml",
-    "https://terrysfreegameoftheweek.com/feed/",
-    "https://fasterthanli.me/index.xml"
+    {
+      "name": "Xe Iaso",
+      "url": "https://xeiaso.net/blog.rss"
+    },
+    {
+      "name": "Drew DeVault",
+      "url": "https://drewdevault.com/blog/index.xml"
+    },
+    {
+      "name": "Dan Luu",
+      "url": "https://danluu.com/atom.xml"
+    },
+    {
+      "name": "Kevin Fiol",
+      "url": "https://kevinfiol.com/atom.xml"
+    },
+    {
+      "name": "Terry's Free Game of the Week",
+      "url": "https://terrysfreegameoftheweek.com/feed/"
+    },
+    {
+      "name": "fasterthanli.me",
+      "url": "https://fasterthanli.me/index.xml"
+    }
   ],
   "reddit": [
-    "https://www.reddit.com/r/Games.rss"
+    {
+      "name": "/r/Games",
+      "url": "https://www.reddit.com/r/Games.rss"
+    }
   ]
 }
