@@ -29,6 +29,8 @@ const config = readCfg('./src/config.json');
 const feeds = USE_CACHE ? {} : readCfg('./src/feeds.json');
 const cache = USE_CACHE ? readCfg(CACHE_PATH) : {};
 
+const startTime = Date.now();
+
 await build({ config, feeds, cache, writeCache: WRITE })
   // .then(() => {
     // const endTime = Date.now();
@@ -48,7 +50,7 @@ async function build({ config, feeds, cache, writeCache = false }) {
   const parser = new Parser();
   const errors = [];
   const groupContents = {};
-
+  const now = new Date();
   for (const groupName in feeds) {
     groupContents[groupName] = [];
 
@@ -94,12 +96,68 @@ async function build({ config, feeds, cache, writeCache = false }) {
 		contents.title = name; // use the name property instead of contents.title
         groupContents[groupName].push(contents);
 
-        // item sort & normalization
+
+		contents.feed = url;
+		contents.title = name; // use the name property instead of contents.title
+
+        groupContents[groupName].push(contents);
+
+	// process items, steps are numbered 1-5 below
+	
+	
+	// 1. sort items by date
         contents.items.sort(byDateSort);
-        contents.items.forEach((item) => {
-          // 1. try to normalize date attribute naming
-          const dateAttr = item.pubDate || item.isoDate || item.date || item.published;
-          item.timestamp = new Date(dateAttr).toLocaleDateString();
+		
+	// calculate and append the age of the item and
+    // filter out anything older than 5 days
+		contents.items = contents.items.map((item) => {
+													  
+		  const dateAttr = new Date(item.pubDate || item.isoDate || item.date || item.published);
+		  const timeSincePosted = now - dateAttr;
+		  const days = Math.floor(timeSincePosted / (1000 * 60 * 60 * 24));
+		  const hours = Math.floor((timeSincePosted % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+		  const minutes = Math.floor((timeSincePosted % (1000 * 60 * 60)) / (1000 * 60));
+		  item.days = days;
+		  item.hours = hours;
+		  item.minutes = minutes;
+		  return item;
+		}).filter((item) => {
+		  return item.days <= 5 && (item.days !== 5 || item.hours === 0);
+		});
+
+
+		contents.items.forEach((item) => {
+
+		  // attach timestamp
+		  if (item.days > 0) {
+			item.timestamp = `[${item.days}d]`;
+		  } else if (item.hours > 0) {
+			item.timestamp = `[${item.hours}h]`;
+		  } else {
+			item.timestamp = `[${item.minutes}m]`;
+		  }
+
+		// attach time tag
+		  if (item.days === 0) {
+			if (item.hours < 1) {
+			  item.timeGroupClass = 'time-1h';
+			} else if (item.hours < 2) {
+			  item.timeGroupClass = 'time-2h';
+			} else if (item.hours < 6) {
+			  item.timeGroupClass = 'time-6h';
+			} else if (item.hours < 12) {
+			  item.timeGroupClass = 'time-12h';
+			} else if (item.hours < 24) {
+			  item.timeGroupClass = 'time-1d';
+			}
+		  } else if (item.days < 2) {
+			item.timeGroupClass = 'time-2d';
+		  } else if (item.days < 5) {
+			item.timeGroupClass = 'time-5d';
+		  } else if (item.days === 5 && item.hours === 0) {
+			item.timeGroupClass = 'time-5d';
+		  }
+		  
 
           // 2. correct link url if it lacks the hostname
           if (item.link && item.link.split('http').length === 1) {
@@ -174,7 +232,6 @@ async function build({ config, feeds, cache, writeCache = false }) {
   // sort `all articles` view
   allItems.sort((a, b) => byDateSort(a, b));
 
-  const now = getNowDate(config.timezone_offset).toString();
   const html = template({ allItems, groups, now, errors });
 
   writeFileSync(resolve(OUTFILE_PATH), html, { encoding: 'utf8' });
