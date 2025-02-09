@@ -30,7 +30,19 @@ const feeds = USE_CACHE ? {} : readCfg('./src/feeds.json');
 const cache = USE_CACHE ? readCfg(CACHE_PATH) : {};
 
 await build({ config, feeds, cache, writeCache: WRITE })
-
+  // .then(() => {
+    // const endTime = Date.now();
+    // const duration = (endTime - startTime) / 1000;
+    // console.log(`Script run time: ${duration} seconds`);
+    // process.exit(0);
+  // })
+  // .catch((e) => {
+    // const endTime = Date.now();
+    // const duration = (endTime - startTime) / 1000;
+    // console.log(`Script run time: ${duration} seconds`);
+    // console.error(e);
+    // process.exit(1);
+  // });
 async function build({ config, feeds, cache, writeCache = false }) {
   let allItems = cache.allItems || [];
   const parser = new Parser();
