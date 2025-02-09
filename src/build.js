@@ -200,9 +200,25 @@ function readCfg(path) {
 
 
 function escapeHtml(html) {
-  return html.replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('\'', '&apos;')
-    .replaceAll('"', '&quot;');
+  const entities = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    '\'': '&apos;',
+    '’': '&apos;',
+    '‘': '&apos;',
+    '“': '&quot;',
+    '”': '&quot;',
+    '<cite>': '&quot;',
+    '</cite>': '&quot;',
+    '&#8217;': '&apos;',
+    '&#8216;': '&apos;',
+  };
+
+  return html.replace(/&(#8217|#8216);|&(?!#)|"|'|’|‘|“|”|<cite>|<\/cite>|<(?!cite)|(?!<cite)>/g, function(match) {
+      const replacement = entities[match] || match;
+      // console.log(`Matched: ${match}, Replaced with: ${replacement}`);
+      return replacement;
+  });
 }
