@@ -29,7 +29,7 @@ const config = readCfg('./src/config.json');
 const feeds = USE_CACHE ? {} : readCfg('./src/feeds.json');
 const cache = USE_CACHE ? readCfg(CACHE_PATH) : {};
 
-await build({ config, feeds, cache, writeCache: WRITE })
+await build({ config, feeds, cache, writeCache: WRITE });
 
 async function build({ config, feeds, cache, writeCache = false }) {
   let allItems = cache.allItems || [];
