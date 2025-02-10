@@ -227,9 +227,11 @@ function escapeHtml(html) {
     '</cite>': '&quot;',
     '&#8217;': '&apos;',
     '&#8216;': '&apos;',
+    '&rsquo;': '&apos;',
+    '&lsquo;': '&apos;',
   };
 
-  return html.replace(/&(#8217|#8216);|&(?!#)|"|'|’|‘|“|”|<cite>|<\/cite>|<(?!cite)|(?!<cite)>/g, function(match) {
+  return html.replace(/&(#8217|#8216);|&rsquo;|&lsquo;|&(?!([a-zA-Z0-9#]+;))|"|'|’|‘|“|”|<cite>|<\/cite>|<(?!cite)|(?!<cite)>/g, function(match) {
       const replacement = entities[match] || match;
       // console.log(`Matched: ${match}, Replaced with: ${replacement}`);
       return replacement;
