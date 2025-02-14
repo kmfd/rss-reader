@@ -96,11 +96,7 @@ async function build({ config, feeds, cache, writeCache = false }) {
 		contents.title = name; // use the name property instead of contents.title
         groupContents[groupName].push(contents);
 
-
-		contents.feed = url;
-		contents.title = name; // use the name property instead of contents.title
-
-        groupContents[groupName].push(contents);
+        // item sort & normalization
 
 	// process items, steps are numbered 1-5 below
 	
