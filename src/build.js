@@ -53,7 +53,6 @@ async function build({ config, feeds, cache, writeCache = false }) {
   const now = new Date();
   for (const groupName in feeds) {
     groupContents[groupName] = [];
-
 	const results = await Promise.allSettled(
 	  feeds[groupName].map(item =>
 		fetch(typeof item === 'string' ? item : item.url, { method: 'GET' })
@@ -219,9 +218,9 @@ async function build({ config, feeds, cache, writeCache = false }) {
 
   // for each group, sort the feeds
   // sort the feeds by comparing the isoDate of the first items of each feed
-  groups.forEach(([_groupName, feeds]) => {
-    feeds.sort((a, b) => byDateSort(a.items[0], b.items[0]));
-  });
+  // groups.forEach(([_groupName, feeds]) => {
+    // feeds.sort((a, b) => byDateSort(a.items[0], b.items[0]));
+  // });
 
   // sort `all articles` view
   allItems.sort((a, b) => byDateSort(a, b));
