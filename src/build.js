@@ -54,28 +54,28 @@ async function build({ config, feeds, cache, writeCache = false }) {
   for (const groupName in feeds) {
     groupContents[groupName] = [];
 
-    
 	const results = await Promise.allSettled(
 	  feeds[groupName].map(item =>
-		fetch(item.url, { method: 'GET' })
-		  .then(res => [item.name, item.url, res])
+		fetch(typeof item === 'string' ? item : item.url, { method: 'GET' })
+		  .then(res => [item, res])
 		  .catch(e => {
-			throw [item.name, item.url, e];
+			throw [item, e];
 		  })
 	  )
 	);
-
+	  
 	for (const result of results) {
 	  if (result.status === 'rejected') {
-		const [name, url, error] = result.reason;
+		const [item, error] = result.reason;
+		const url = typeof item === 'string' ? item : item.url;
 		errors.push(url);
-		console.error(`Error fetching ${name} (${url}):\n`, error);
+		console.error(`Error fetching ${typeof item === 'string' ? item : item.name} (${url}):\n`, error);
 		continue;
 	  }
-	  
-  
-        const [name, url, response] = result.value;
 
+	const [item, response] = result.value;
+	const url = typeof item === 'string' ? item : item.url;
+  
       try {
         // e.g., `application/xml; charset=utf-8` -> `application/xml`
         const contentType = response.headers.get('content-type').split(';')[0];
@@ -93,10 +93,8 @@ async function build({ config, feeds, cache, writeCache = false }) {
           throw Error(`Feed at ${url} contains no items.`)
 
         contents.feed = url;
-		contents.title = name; // use the name property instead of contents.title
+		contents.title = item.name || contents.title || contents.link; // use name provided on feeds.json if present, or feed title, or feed url
         groupContents[groupName].push(contents);
-
-        // item sort & normalization
 
 	// process items, steps are numbered 1-5 below
 	
