@@ -2,7 +2,7 @@
 
 ![screenshot](./demo.png)
 
-[Demo Site](https://kmfd.gihub.com/rss-reader/)
+[Demo Site](https://kmfd.github.com/rss-reader/)
 
 This is a fork of the excellent [Bubo Reader](https://github.com/kevinfiol/rss-reader) by Kevin Fiol, which is itself a fork of the also excellent [Bubo Reader](https://github.com/georgemandis/bubo-rss) by George Mandis. On top of Kevin's technical changes, I've made further design and style changes to suit my page layout preferences, and a few other enhancements. Please see below for deployment instructions.
 
