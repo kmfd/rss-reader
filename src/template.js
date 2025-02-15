@@ -83,14 +83,6 @@ export const template = ({ allItems, groups, errors, now }) => (`
             <details open="">
               <summary>
                 <span class="feed-title">${feed.title}</span> 
-                <span class="feed-url">
-                  <small>
-                    (${feed.feed})
-                  </small>
-                </span>
-                <div class="feed-timestamp">
-                  <small>Latest: ${feed.items[0] && feed.items[0].timestamp || ''}</small>
-                </div>
               </summary>
               ${forEach(feed.items, item => article(item))}
             </details>
