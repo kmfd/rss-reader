@@ -46,7 +46,7 @@ export const template = ({ allItems, groups, errors, now }) => (`
       <header>
         <h1 class="inline" style="user-select: none;">🦉</h1>
         <ul class="group-selector">
-          <li><a href="#all-articles">all articles</a></li>
+          <li><a href="#all-firehose">all - firehose</a></li>
           ${forEach(groups, group => `
             <li><a href="#${group[0]}">${group[0]}</a></li>
           `)}
@@ -72,8 +72,8 @@ export const template = ({ allItems, groups, errors, now }) => (`
     </div>
 
     <main>
-      <section id="all-articles">
-        <h2>all articles</h2>
+      <section id="all-firehose">
+        <h2>all - firehose</h2>
         ${forEach(allItems, item => article(item))}
       </section>
 

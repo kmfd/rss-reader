@@ -222,7 +222,18 @@ async function build({ config, feeds, cache, writeCache = false }) {
     // feeds.sort((a, b) => byDateSort(a.items[0], b.items[0]));
   // });
 
-  // sort `all articles` view
+	// add a group that will automatically include the feeds from every group
+	const allFeeds = groups.reduce((acc, [groupName, feeds]) => {
+	  if (Array.isArray(feeds)) {
+		return acc.concat(feeds);
+	  } else {
+		return acc.concat([feeds]);
+	  }
+	}, []);
+
+	groups.splice(0, 0, ['all - by feed', allFeeds]);
+
+  // sort `all - firehose` view
   allItems.sort((a, b) => byDateSort(a, b));
 
   const html = template({ allItems, groups, now, errors });
