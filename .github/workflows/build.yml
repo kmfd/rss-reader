@@ -2,7 +2,7 @@ name: builder
 on:
   push:
     branches:
-      - main
+      - demo
   # Uncomment the section below to enable scheduled builds
   schedule:
     # Run this script every 1 hr
