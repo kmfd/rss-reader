@@ -48,7 +48,7 @@ export const template = ({ allItems, groups, errors, now }) => (`
         <ul class="group-selector">
           <li><a href="#all-firehose">all - firehose</a></li>
           ${forEach(groups, group => `
-            <li><a href="#${group[0]}">${group[0]}</a></li>
+            <li><a href="#${group[0]}" target="_top">${group[0]}</a></li>
           `)}
         </ul>
       </header>
