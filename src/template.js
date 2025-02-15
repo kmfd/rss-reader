@@ -5,15 +5,14 @@ const forEach = (arr, fn) => {
 };
 
 const article = (item) => `
-  <article class="item">
+  <article class="item ${item.timeGroupClass}">
     <header class="item__header">
       <a class="article-title" href="${item.link}" target='_blank' rel='noopener norefferer nofollow'>
         ${item.title}
       </a>
-      ${item.feedUrl ? `<span class="item__feed-url monospace">${item.feedUrl}</span>` : ''}
-      <ul class="article-links">
-        <li class="monospace">${item.timestamp || ''}</li>
-        ${item.comments ? `
+      <ul class="article-links" style="display: inline; margin-left: 1rem;">
+        <li class="article-links-item article-timestamp monospace">${item.timestamp || ''}</li>
+		${item.comments ? `
           <li class="article-links-item"><a href="${item.comments}" target='_blank' rel='noopener norefferer nofollow'>💬</a></li>
         ` : ''
         }
@@ -38,7 +37,7 @@ export const template = ({ allItems, groups, errors, now }) => (`
 <body>
   <div class="app">
     <input type="checkbox" class="menu-btn" id="menu-btn" />
-    <label class="menu-label" for="menu-btn"></label>
+    <label class="menu-label monospace" for="menu-btn"></label>
 
     <div class="sidebar">
       <header>
@@ -77,6 +76,38 @@ export const template = ({ allItems, groups, errors, now }) => (`
       </footer>
     </div>
 
+	<div id="top">
+	  <h1>🦉📚 </h1>
+	  <h1>welcome to bubo reader</h1>
+	  <p>An open source RSS report.</p>
+	  <p>Last updated ${now}.</p>
+	  <br>
+		  <div id=head-groups-wrapper>
+				  <ul class="head-groups">
+	  <li><a href="#all-firehose">all - firehose</a></li>
+	  ${forEach(groups, group => `
+		<li><a href="#${group[0]}">${group[0]}</a></li>
+	  `)}
+	</ul>
+		</div>
+		<div class="limit-selector">
+		  <span>Limit: </span>
+		  <input type="radio" id="limit-1h" name="time">
+		  <label for="limit-1h">1h</label>
+		  <input type="radio" id="limit-2h" name="time">
+		  <label for="limit-2h">2h</label>
+		  <input type="radio" id="limit-6h" name="time">
+		  <label for="limit-6h">6h</label>
+		  <input type="radio" id="limit-12h" name="time">
+		  <label for="limit-12h">12h</label>
+		  <input type="radio" id="limit-1d" name="time">
+		  <label for="limit-1d">1d</label>
+		  <input type="radio" id="limit-2d" name="time">
+		  <label for="limit-2d">2d</label>
+		  <input type="radio" id="limit-5d" name="time">
+		  <label for="limit-5d">5d</label>
+		</div>
+	</div>
     <main>
       <section id="all-firehose">
         <h2>all - firehose</h2>

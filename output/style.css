@@ -14,12 +14,11 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --color: #ddd;
-    --bg-color: #151515;
-    --faded-bg: #1b1b1b;
+    --bg-color: #030303;
+    --faded-bg: #0b0b0b;
   }
 }
-
-@media screen and (max-width: 900px) {
+										
   :root {
     --main-padding-right: 0;
   }
@@ -29,38 +28,61 @@
     margin-left: 0 !important;
   }
 
+section > h2 {
+  margin-top: -4px;
+  padding-top: 10px;
+  position: sticky;
+  top: -100px;
+  left: 60px;
+  font-size: calc(var(--title-font-size) + 14px);
+  pointer-events: none;
+  height: 20px;
+  width: 0;
+  overflow: visible;
+  grid-column: 1 / -1;
+  width: 80%;
+  left: 20px;
+}
+
+
+section > h2, .limit-selector {
+  z-index: 250;
+}
+
   .menu-label,
   .menu-btn {
     display: block !important;
     position: absolute;
     top: 0;
-    right: 0;
+    right: 8px;
     z-index: 99;
+	width: 70px;
   }
 
   .menu-btn {
     display: none !important;
+ 
   }
 
-  .menu-label {
-    padding: 1rem 2rem;
-    background-color: var(--faded-bg);
-  }
+.menu-label {
+  padding: 12px 12px 6px 8px;
+  background-color: var(--faded-bg);
+  font-size: --title-font-size;
+  text-align: right;
+}
 
   .menu-label::after {
-    content: 'groups';
+    content: 'feeds...';
+    vertical-align: bottom;
   }
 
   .menu-btn:checked ~ .sidebar {
     display: block !important;
-  }
-
-  .menu-btn:checked ~ main {
-    display: none !important;
+	z-index: 20;
   }
 
   .menu-btn:checked ~ .menu-label::after {
-    content: 'back';
+    content: 'return\00A0\00A0';
   }
 
   .sidebar {
@@ -68,16 +90,53 @@
     padding: 1rem;
     position: absolute;
     top: 0;
-    left: 0;
+    right: 0;
     height: 100%;
     background-color: var(--bg-color);
+	max-width: min(400px, 75%);							 
   }
+  
+.sidebar > header 
+{
+padding-top: 40px;
+}
+  
+#top {
+margin: 0px 90px 0 4px;
+font-family: monospace;
+font-size: var(--font-size);
+}
+
+#top p {
+ width: 110%;
+ margin: 6px auto; 
+}
+
+ul.head-groups {
+	display: flex;
+	list-style-type: none;
+	left: -40px;
+	flex-wrap: wrap;
+	position: relative;
+	padding-bottom: 2px;
+    margin: 0 -130px 16px 0;
+
+	li a {
+		color: var(--color);
+	}
+
+	li:not(:last-child)::after {
+		content: '|'; /* Add pipe symbol after each item except the last */
+		margin: 0 0.4rem; /* Add some spacing around the pipe */
+	}
+}
 
   .sidebar
     > header
     > .group-selector {
       list-style: none;
-      padding: 0;
+      padding: 75px 0 0 0;
+	  text-align: right;
     }
 
   .sidebar
@@ -86,6 +145,79 @@
     > li {
       font-size: 1.2em;
     }
+
+.limit-selector {
+  display: inline-block;
+  border: 1px solid #ccc;
+  padding: 5px;
+  border-radius: 5px;
+
+  span {
+    display: inline-block;
+    width: 100%;
+  }
+}
+
+.limit-selector input[type="radio"] {
+  display: none;
+}
+
+.limit-selector label {
+  display: inline-block;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin: 2px 0px;
+}
+
+.limit-selector input[type="radio"]:checked + label {
+  background-color: #ccc;
+  border: 1px solid #666;
+}
+
+/* Hide articles longer than 1 hour when #limit-1h is checked */
+#top:has(#limit-1h:checked) ~ main article.time-2h,
+#top:has(#limit-1h:checked) ~ main article.time-6h,
+#top:has(#limit-1h:checked) ~ main article.time-12h,
+#top:has(#limit-1h:checked) ~ main article.time-1d,
+#top:has(#limit-1h:checked) ~ main article.time-2d,
+#top:has(#limit-1h:checked) ~ main article.time-5d {
+  display: none;
+}
+
+/* Hide articles longer than 2 hours when #limit-2h is checked */
+#top:has(#limit-2h:checked) ~ main article.time-6h,
+#top:has(#limit-2h:checked) ~ main article.time-12h,
+#top:has(#limit-2h:checked) ~ main article.time-1d,
+#top:has(#limit-2h:checked) ~ main article.time-2d,
+#top:has(#limit-2h:checked) ~ main article.time-5d {
+  display: none;
+}
+
+/* Hide articles longer than 6 hours when #limit-6h is checked */
+#top:has(#limit-6h:checked) ~ main article.time-12h,
+#top:has(#limit-6h:checked) ~ main article.time-1d,
+#top:has(#limit-6h:checked) ~ main article.time-2d,
+#top:has(#limit-6h:checked) ~ main article.time-5d {
+  display: none;
+}
+
+/* Hide articles longer than 12 hours when #limit-12h is checked */
+#top:has(#limit-12h:checked) ~ main article.time-1d,
+#top:has(#limit-12h:checked) ~ main article.time-2d,
+#top:has(#limit-12h:checked) ~ main article.time-5d {
+  display: none;
+}
+
+/* Hide articles longer than 1 day when #limit-1d is checked */
+#top:has(#limit-1d:checked) ~ main article.time-2d,
+#top:has(#limit-1d:checked) ~ main article.time-5d {
+  display: none;
+}
+
+/* Hide articles longer than 2 days when #limit-2d is checked */
+#top:has(#limit-2d:checked) ~ main article.time-5d {
+  display: none;
 }
 
 @keyframes details-show {
@@ -98,11 +230,52 @@
 body {
   color: var(--color);
   background-color: var(--bg-color);
-  margin: 0;
+  margin: 0 auto;
   padding: 0;
   font-family: serif;
   font-size: var(--font-size);
-  overflow: hidden;
+  overflow-x: hidden;
+}
+
+section {
+  z-index: 1;
+  /* ! Everything below is needed ! */
+  margin: 0 2px;
+  display: none;
+  height: 100%;
+  width: 100%;
+  background-color: var(--bg-color);
+  padding-top: 80px;
+  margin-top: 20px;
+}
+
+section:target { /* Show section */
+  display: block;
+}
+
+article {
+	  list-style: none;
+  position: relative;
+  padding-left: 20px;
+  top: 0;
+}
+
+article::before {
+  content: "•";
+  position: absolute;
+  top: 8.5px;
+  left: 3.25px;
+}
+
+details, summary  {
+ background-color: var(--faded-bg) !important;
+}
+
+details {
+  min-height: 38px;
+  height: fit-content;
+  margin: 0 0 4px;
+  padding: 0 0 4px;
 }
 
 details[open] > *:not(summary),
@@ -116,6 +289,7 @@ h1, h2, h3 {
 
 a:link {
   color: inherit;
+  text-decoration: none;
 }
 
 a:visited {
@@ -129,14 +303,19 @@ a:hover {
 summary {
   position: sticky;
   top: 0;
-  padding-top: 0.65rem;
-  padding-bottom: 0.65rem;
+  width: 98%;
+  padding-left: 2px;
+  padding-top: 0.75rem;
+  padding-bottom: 0.15rem;
+  margin-bottom: 0px;
   user-select: none;
   cursor:pointer;
   font-family: monospace;
   background-color: var(--bg-color);
+  margin-right: 10px;
+z-index:10;
 }
-
+				  
 summary:hover span,
 summary:hover div {
   opacity:.75;
@@ -145,6 +324,7 @@ summary:hover div {
 .menu-btn,
 .menu-label {
   display: none;
+  position: fixed;
 }
 
 .group-selector a,
@@ -177,50 +357,70 @@ summary:hover div {
 
 .inline {
   display: inline;
+  font-size: calc(var(--title-font-size) + 24px);
+  position: absolute;
+  margin-top: -20px;
 }
-
+ 
 .app {
-  display: flex;
   gap: 2rem;
-  padding: 0 0rem 1rem 1rem;
+  margin: 0 auto;
+  padding: 0 8px 0 4px;
 }
 
 .sidebar {
   flex: 1;
-  display: flex;
+  display: none;
   flex-direction: column;
   justify-content: space-between;
+  position: fixed;
 }
 
 header {
-  padding-top: 1rem;
+  padding-top: 0.5rem;
 }
 
 main {
   flex: 5;
   height: 100vh;
-  overflow-y: auto;
-  padding-right: var(--main-padding-right);
+  overflow-x: visible;
+  margin-top: -85px;
 }
 
 article.item {
-  max-width: 85%;
-  padding: 0.15rem 0.75rem;
-  margin-left: 1.5rem;
-  margin-right: 1.5rem;
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
+  width: 93%;
   background-color: var(--faded-bg);
+  display: flow-root list-item;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
-#all-articles > article.item {
-  margin-left: 0;
+	  
+		  
+				
+.article-links {
+  font-size: 0.8em !important;
+  color: #3391ff; // brutal
+}
+.article-timestamp {
+  color: #DDD !important;
 }
 
+a.article-title {
+  color: #3391ff; // brutal
+}
+
+
+a.article-title:visited {
+  color: #b58c8c;
+}
+
+						   
+ 
 article.item header.item__header {
   font-size: var(--title-font-size);
 }
 
+				 
 .item__feed-url {
   opacity: 0.25;
 }
@@ -236,41 +436,66 @@ ul.article-links > li {
 }
 
 footer {
-  opacity: 0.25;
-  font-size: 0.75em;
+  opacity: 0.75;
 }
 
 footer:hover {
   opacity: 1;
 }
 
-section {
-  z-index: 1;
-  /* ! Everything below is needed ! */
-  display: none;
-  height: 100%;
-  width: 100%;
-  background-color: var(--bg-color);
+ 
+footer p {
+ color: #aaa !important;
+  font-family: serif;
 }
-
-section > h2 {
-  margin-top: 0;
-  padding-top: 19px;
-}
-
-section:target { /* Show section */
-  display: block;
+section#all-firehose:target { 
+    grid-column-gap: 0px;
+    margin: 12px 3px;
 }
 
 section:target ~ .default-text {
   display: none;
 }
 
-
 .default-text {
   text-align: center;
   position: relative;
-  top: 5%;
+  top: 100px;
   font-family: monospace;
-  font-size: 2em;
+  font-size: 20px;
+}
+
+@media screen and (min-width: 901px) {
+	section:target {
+	  display: grid;
+	  grid-template-columns: repeat(3, 1fr);
+	  grid-column-gap: 6px;
+	  padding-left: 5px;
+	  margin: 0 auto;
+	  height: fit-content;
+	}
+
+	summary {
+	  position: sticky;
+	  top: 0;
+	  width: 98%;
+	  padding-left: 2px;
+	  user-select: none;
+	  cursor:pointer;
+	  font-family: monospace;
+	  background-color: var(--bg-color);
+	  margin-right: 10px;
+	  z-index:10;
+	}
+
+	.app {
+	  gap: 2rem;
+	  margin: 0 auto;
+	  padding: 0 12px 0 0;
+	}
+
+	section#all-firehose:target { 
+		grid-column-gap: 0px;
+		width: 100.5%;
+	}
 }
