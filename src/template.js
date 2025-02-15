@@ -80,7 +80,7 @@ export const template = ({ allItems, groups, errors, now }) => (`
           <h2>${groupName}</h2>
 
           ${forEach(feeds, feed => `
-            <details>
+            <details open="">
               <summary>
                 <span class="feed-title">${feed.title}</span> 
                 <span class="feed-url">
