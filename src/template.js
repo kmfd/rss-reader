@@ -64,7 +64,15 @@ export const template = ({ allItems, groups, errors, now }) => (`
         }
 
         <p>
-          Last updated ${now}. Powered by <a href="https://github.com/kevinfiol/rss-reader">Bubo Reader</a>, a project by <a href="https://george.mand.is">George Mandis</a> and <a href="https://kevinfiol.com">Kevin Fiol</a>.
+          Last updated ${now}.
+        </p>
+        <p>
+          Set up your own reader with your preferred feeds, by forking this project! Check out how at:
+		  <a href="https://github.com/kmfd/rss-reader">https://github.com/kmfd/rss-reader</a></p>
+        </p>
+		</br>
+        <p>
+          Powered by <a href="https://github.com/kevinfiol/rss-reader">Bubo Reader</a>, a project by <a href="https://george.mand.is">George Mandis</a> and <a href="https://kevinfiol.com">Kevin Fiol</a>.
         </p>
       </footer>
     </div>
@@ -91,7 +99,6 @@ export const template = ({ allItems, groups, errors, now }) => (`
       `)}
 
         <div class="default-text">
-          <p>🦉📚 welcome to bubo reader</p>
           <p>select a feed group to get started</p>
         </div>
     </main>
