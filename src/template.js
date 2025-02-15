@@ -7,23 +7,21 @@ const forEach = (arr, fn) => {
 const article = (item) => `
   <article class="item">
     <header class="item__header">
-      <a href="${item.link}" target='_blank' rel='noopener norefferer nofollow'>
+      <a class="article-title" href="${item.link}" target='_blank' rel='noopener norefferer nofollow'>
         ${item.title}
       </a>
-    </header>
-
-    <small>
       ${item.feedUrl ? `<span class="item__feed-url monospace">${item.feedUrl}</span>` : ''}
       <ul class="article-links">
         <li class="monospace">${item.timestamp || ''}</li>
         ${item.comments ? `
-          <li><a href="${item.comments}" target='_blank' rel='noopener norefferer nofollow'>comments</a></li>
+          <li class="article-links-item"><a href="${item.comments}" target='_blank' rel='noopener norefferer nofollow'>💬</a></li>
         ` : ''
         }
-        <li><a href="https://txtify.it/${item.link}" target='_blank' rel='noopener norefferer nofollow'>txtify</a></li>
-        <li><a href="https://archive.md/${item.link}" target='_blank' rel='noopener norefferer nofollow'>archive.md</a></li>
+        <li class="article-links-item"><a href="https://txtify.it/${item.link}" target='_blank' rel='noopener norefferer nofollow'>[txtfy]</a></li>
+		<li class="article-links-item"><a href="https://r3ad.deno.dev/${item.link}" target='_blank' rel='noopener norefferer nofollow'>[r3ad]</a></li>
+        <li class="article-links-item"><a href="https://archive.md/${item.link}" target='_blank' rel='noopener norefferer nofollow'>[a.md]</a></li>
       </ul>
-    </small>
+    </header>
   </article>
 `;
 
