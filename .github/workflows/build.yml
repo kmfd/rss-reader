@@ -2,7 +2,7 @@ name: builder
 on:
   push:
     branches:
-      - demo
+      - demo2
   # Uncomment the section below to enable scheduled builds
   schedule:
     # Run this script every 1 hr
@@ -27,7 +27,7 @@ jobs:
       - name: deploy
         uses: JamesIves/github-pages-deploy-action@4.1.5
         with:
-          single-commit: true
+     #     single-commit: true
           git-config-email: <>
           branch: gh-pages
           folder: output
