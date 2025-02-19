@@ -1,3 +1,6 @@
+# Although we can choose here which branch to build
+# this workflow must reside on the default branch
+# in order to be active
 name: builder
 on:
   push:
@@ -7,12 +10,14 @@ on:
   schedule:
     # Run this script every 1 hr
     #  */m hr day month day_of_week
-    - cron:  '0 */1 * * *'
+    - cron: '0 */1 * * *'
 jobs:
   build-and-deploy:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
+        with:
+          ref: demo2
       - uses: actions/setup-node@v3
         with:
           node-version: 18.15.0
